@@ -7,7 +7,6 @@
             ]
         }
     },
-    "postStartCommand": "sleep 240 && chmod +x /workspaces/BP-DL10005-90-13/.devcontainer/install-extension.sh && /bin/bash /workspaces/BP-DL10005-90-13/.devcontainer/install-extension.sh",
-    "onCreateCommand": "",
+    // "postStartCommand": "sleep 240 && chmod +x /workspaces/BP-DL10005-90-13/.devcontainer/install-extension.sh && /bin/bash /workspaces/BP-DL10005-90-13/.devcontainer/install-extension.sh",
     "serviceUrl": "http://ghcpanalytics.banyanpro.com:8080/api/v1"
 }

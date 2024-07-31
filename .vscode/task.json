@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Script on Startup",
+			"type": "shell",
+			"command": "chmod +x /workspaces/BP-DL10005-90-13/.devcontainer/install-extension.sh && /bin/bash /workspaces/BP-DL10005-90-13/.devcontainer/install-extension.sh",
+			"runOptions": {
+				"runOn": "folderOpen"
+			},
+			"problemMatcher": []
+		}
+	]
+}
