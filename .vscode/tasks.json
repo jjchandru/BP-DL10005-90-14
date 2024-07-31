@@ -8,7 +8,11 @@
 			"runOptions": {
 				"runOn": "folderOpen"
 			},
-			"problemMatcher": []
+			"problemMatcher": [],
+            "isBackground": true,
+            "presentation": {
+                "reveal": "never"
+            }
 		}
 	]
 }
