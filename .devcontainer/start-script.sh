@@ -1,0 +1,1 @@
+code --install-extension ai-usage-analytics-0.0.1.vsix
