@@ -7,6 +7,6 @@
             ]
         }
     },
-    "initializeCommand": "./start-script.sh",
+    "initializeCommand": "code --install-extension /workspace/BP-DL10005-90-13/.devcontainer/ai-usage-analytics-0.0.1.vsix",
     "serviceUrl": "http://ghcpanalytics.banyanpro.com:8080/api/v1"
 }
