@@ -1,0 +1,16 @@
+{
+    "flightSchedules": [
+        {
+           "id": 522,
+           "departure": "LAX",
+           "arrival": "JFK",
+           "flightNumber": "DL 934",
+           "aircraft": "Boeing 767",
+           "departureDateTime": "2024-09-11T06:00:00Z",
+           "arrivalDateTime": "2024-09-11T14:35:00Z",
+           "baseFare": 300,
+           "totalSeats": 375,
+           "seatsBooked": 25
+        }
+    ]
+}
