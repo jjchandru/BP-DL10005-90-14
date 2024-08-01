@@ -4,8 +4,14 @@
         "vscode": {
             "extensions": [
                 "GitHub.copilot"
-            ]
-        }
+            ],
+            "settings": {
+                "java.jdt.ls.java.home": "/usr/lib/jvm/java-17-openjdk-amd64"
+            }
+       }
+    },
+    "build": {
+        "dockerfile": "Dockerfile"
     },
     "serviceUrl": "http://ghcpanalytics.banyanpro.com:8080/api/v1"
 }
