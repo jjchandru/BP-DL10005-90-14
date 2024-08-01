@@ -7,5 +7,11 @@ do
 	sleep 2
 done
 
+# Check if WORKSPACE_FOLDER is set
+if [ -z "$WORKSPACE_FOLDER" ]; then
+	echo "Error: WORKSPACE_FOLDER environment variable is not set."
+	exit 1
+fi
+
 # Install the extension
-code --install-extension /workspaces/BP-DL10005-90-13/.devcontainer/ai-usage-analytics-0.0.1.vsix
+code --install-extension "$WORKSPACE_FOLDER/.devcontainer/ai-usage-analytics-0.0.1.vsix"
