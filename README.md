@@ -1,4 +1,4 @@
-# **FliSpart GitHub Copilot Assessment** #
+# **FliSpark GitHub Copilot Assessment** #
 
 ## **Introduction** ##
 
