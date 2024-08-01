@@ -4,7 +4,7 @@
 		{
 			"label": "Run Script on Startup",
 			"type": "shell",
-			"command": "chmod +x /workspaces/BP-DL10005-90-13/.devcontainer/install-extension.sh && /bin/bash /workspaces/BP-DL10005-90-13/.devcontainer/install-extension.sh",
+			"command": "chmod +x ${workspaceFolder}/.devcontainer/install-extension.sh && /bin/bash ${workspaceFolder}/.devcontainer/install-extension.sh",
 			"runOptions": {
 				"runOn": "folderOpen"
 			},
