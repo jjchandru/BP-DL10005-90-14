@@ -8,9 +8,45 @@
            "aircraft": "Boeing 767",
            "departureDateTime": "2024-09-11T06:00:00Z",
            "arrivalDateTime": "2024-09-11T14:35:00Z",
-           "baseFare": 300,
+           "baseFare": 400,
            "totalSeats": 375,
            "seatsBooked": 25
-        }
+        },
+        {
+            "id": 523,
+            "departure": "LAX",
+            "arrival": "JFK",
+            "flightNumber": "DL 934",
+            "aircraft": "Boeing 767",
+            "departureDateTime": "2024-09-12T06:00:00Z",
+            "arrivalDateTime": "2024-09-12T14:35:00Z",
+            "baseFare": 400,
+            "totalSeats": 375,
+            "seatsBooked": 125
+         },
+         {
+             "id": 524,
+             "departure": "LAX",
+             "arrival": "JFK",
+             "flightNumber": "DL 934",
+             "aircraft": "Boeing 767",
+             "departureDateTime": "2024-09-13T06:00:00Z",
+             "arrivalDateTime": "2024-09-13T14:35:00Z",
+             "baseFare": 400,
+             "totalSeats": 375,
+             "seatsBooked": 230
+          },
+          {
+              "id": 525,
+              "departure": "LA",
+              "arrival": "JFK",
+              "flightNumber": "DL 934",
+              "aircraft": "Boeing 767",
+              "departureDateTime": "2024-09-14T06:00:00Z",
+              "arrivalDateTime": "2024-09-14T14:35:00Z",
+              "baseFare": 400,
+              "totalSeats": 375,
+              "seatsBooked": 350
+           }
     ]
 }

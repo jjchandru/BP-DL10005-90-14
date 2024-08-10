@@ -1,116 +1,59 @@
-# **FliSpark GitHub Copilot Assessment** #
+# FliSpark GitHub Copilot Assessment
 
-## **Introduction** ##
+## Introduction
 
 Welcome to the FliSpark assessment.
 
-FliSpark is an imaginary airline. Currently it incorporates static fare for each flight. It wants to convert its base static fare into dynamic fare. Find below how the dynamic fare will work.
+FliSpark is an imaginary airline. Currently it incorporates static fare for each flight. It wants to convert its base static fare into dynamic fare. Details about the dynamic fare calculation is explained below.
 
-## **Dynamic Fare Rules** ##
+A REST API needs to be built, that will return flight schedule details with computed dynamic fare.
 
-Each flight is scheduled for booking 100 days before the actual flight date. Let us split these hundred dates into 10 equal periods. Half of the base fare will be considered for the first 10 days period. In the next 10 days period, 10% of the base fare must be added to the previous 10 days period fare. Likewise, the price increases 10% in each subsequent 10 days period.
+The REST API can be developed using any one of below mentioned technologies.
 
-Seat occupancy will also be added as a factor for dynamic fare. Let us see how this will work. The seat occupancy factor kicks in only after 50 days of the start of the booking period. The price will be added or reduced based on the below logic.
+| Language   | Software Installed | Command to test software installation in Terminal |
+|------------|--------------------|---------------------------------------------------|
+| Java       | JDK 17             | ```javac --version```                             |
+| Python     | Python 3           | ```python3 --version```                           |
+| JavaScript | Node.js 20         | ```node -v```                                     |
+
+Respective language specific software is already installed. Check software installation by running the command provided above, in the terminal.
+
+The developed REST API service must run on port 60000.
+
+## Dynamic Fare Rules
+
+Each flight is scheduled for booking 100 days before the actual flight date. These 100 days duration does not consider the flight's scheduled departure date. These 100 days can be divided into 10 equal periods. Half of the base fare will be considered for the first 10 days period. In the next 10 days period, 10% of the base fare must be added to the previous 10 days period fare. Likewise, the price increases 10% to each subsequent 10 days period on the dynamic fare calculated on the previous period.
+
+Seat occupancy percentage will also be added as a factor for dynamic fare. Let us see how this will work. The seat occupancy factor kicks in only after 50 days of the start of the booking period. The price will be added or reduced based on the below logic.
 
 - If seat occupancy is less than 25%, then $30 will be reduced from the dynamic fare.
 - If seat occupancy is between 26% and 50%, then there is no change in the dynamic fare.
 - If seat occupancy is between 51% and 75%, then $10 will be added to the dynamic fare.
 - If seat occupancy is above 75% then $30 will be added to the dynamic fare.
 
-## **Example #1** ##
+To avoid discrepancy in fractional data, the test base fare will always be a multiple of 10, hence the base fare and dynamic fare will always be a whole number.
 
-The flight data is available in data.json in the root folder of the project. Below the sample data.
+## Test Data
 
-```
-{
-    "flightSchedules": [
-        {
-           "id": 522,
-           "departure": "LAX",
-           "arrival": "JFK",
-           "flightNumber": "DL 934",
-           "aircraft": "Boeing 767",
-           "departureDateTime": "2024-09-11T06:00:00Z",
-           "arrivalDateTime": "2024-09-11T14:35:00Z",
-           "baseFare": 300,
-           "totalSeats": 375,
-           "seatsBooked": 25
-        }
-    ]
-}
-```
+Test data is provided in `data.json` in the root folder of this repository.
 
+Use the test data available in `data.json` as reference for building the REST API.
 
-Notice that the above flight schedule data does not contain the dynamic fare.
+Consider `data.json` as the database for flight schedules and the REST API must return the specific flight data based on this file.
 
-In the request the flight schedule id and date must be passed as input.
+***IMPORTANT NOTE:*** Do not modify the test data provided in `data.json`. Feel free to add your own test data entries without disturbing the existing entries.
 
-Following is the dynamic fare calculation and the JSON response that needs to be sent back.
+## Example 1
 
-Flight is scheduled on Sep 11, 2024.
-
-Booking starts from Jun 3, 2024.
-
-The dynamic fare for the first 10 days from 3rd Jun to 12th Jun is:
-
-        basePrice / 2 => $300 / 2 = $150
-
-Let us assume that the booking is made on Jun 13, 2024.
-
-The first 10 day booking range is from 3rd Jun to 12th Jun, hence Jun 13 falls under the second 10 days period.
-
-So, 10% of base fare needs to be added to the first 10 days dynamic fare, which will be:
-
-        $150 + 10% of $300 = $150 + $30 = $180.
-
-13th Jun is before the 50 days booking period; hence the dynamic fare does not change due to seat occupancy, hence the dynamic fare is $180.
-
-## **REST API for Example #1** ##
-
-You have to write a REST API that returns the flight details with dynamic fare.
-
-Sample request:
-
-[http://localhost:9000/api/v1/flight-schedules?id=522&date=2024-06-13](http://localhost:9000/api/v1/flight-schedules?id=522&date=2024-06-13)
-
-So, the JSON response for the above request must be:
+### Input
 
 ```
-{
-   "id": 522,
-   "departure": "LAX",
-   "arrival": "JFK",
-   "flightNumber": "DL 934",
-   "aircraft": "Boeing 767",
-   "departureDateTime": "2024-09-11T06:00:00Z",
-   "arrivalDateTime": "2024-09-11T14:35:00Z",
-   "dynamicFare": 180
- }
- ```
-## REST API for Example #2 ##
+GET
+http://localhost:60000/api/v1/flight-schedules/522/2024-06-01
+```
+The parameter `522` represents the flight schedule id and `2024-06-01` represents the booking date.
 
-Let us consider another example, which will include seat occupancy as well when calculating the dynamic fare. Let us assume that the REST API is called on the 2nd Sep, which is exactly 10 days before the flight schedule. The below table shows the dynamic fare for each 10 days period.
-
-
-| 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100 |
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-|$150|$180|$210|$240|$270|$300|$330|$360|$390|$420|
-
-2nd Sep 2024 falls under the 10th period. Hence the dynamic fare is $420.
-
-If booking date is obviously above 50% of the duration of booking period.
-
-The total seats available is 375 and the booked seat count is 25.
-
-The occupancy percentage is (25 / 375) * 100 = 6.66%.
-
-The occupancy percentage is less than 25%, so $30 must be reduced from the dynamic fare.
-
-The dynamic fare is $420 - $30 = $390.
-
-So, the dynamic fare is $390 and the request and response will be:
-
-[http://localhost:9000/api/v1/flight-schedules?id=522&date=2024-07-13](http://localhost:9000/api/v1/flight-schedules?id=522&date=2024-07-13)
+Below is the data for flight schedule with id 522 in `data.json`.
 
 ```
 {
@@ -121,27 +64,147 @@ So, the dynamic fare is $390 and the request and response will be:
     "aircraft": "Boeing 767",
     "departureDateTime": "2024-09-11T06:00:00Z",
     "arrivalDateTime": "2024-09-11T14:35:00Z",
-    "dynamicFare": 390
+    "baseFare": 300,
+    "totalSeats": 375,
+    "seatsBooked": 25,
+    "dynamicFare": 0
 }
 ```
-## Technology Environment ##
+### Output
 
-The following languages are installed in the evaluation environment.
+For the above request, it must return the below status code and JSON response.
 
-- JDK 17
-- Python 3
-- NodeJS 20.16
+```
+400
+{"message":"Booking date not within 100 day range"}
+```
 
-Hence you can use Java, Python or JavaScript to complete the implementation of the REST API.
+### Explanation
 
-## Completion Guidelines ##
+The scheduled `departureDateTime` for flight schedule with `id` 522 is `2024-09-11T06:00:00Z`. Departure time is in local time.
 
-1. The REST API endpoint must match the sample endpoints provided above.
+The days from `03 Jun 2024` to `10 Sep 2024` is the booking period duration of 100 days.
 
-2. The port number must be 9000.
+`Jun - 28 days; Jul - 31 days; Aug - 31 days; Sep - 10 days; 28 + 31 + 31 + 10 = 100 days.`
 
-3. Provide the start script to start the service in compile-build-and-start-service.bat file provided in the root folder of this project.
+The booking date provided in the URL `2024-06-01` is two days before the booking start date of `03 Jun 2024`, hence the booking date is not valid, hence the above request must return response status code as 400 with appropriate error message.
 
-4. Commit and Push the code into GitHub.
+## Example 2
 
-5. Validate and Submit the code.
+### Input
+
+```
+GET
+http://localhost:60000/api/v1/flight-schedules/522/2024-06-03
+```
+### Output
+
+For the above request, it must return the below status code and JSON response.
+
+```
+200
+{
+    "id":522,
+    "departure":"LAX",
+    "arrival":"JFK",
+    "flightNumber":"DL 934",
+    "aircraft":"Boeing 767",
+    "departureDateTime":"2024-09-11T06:00:00Z",
+    "arrivalDateTime":"2024-09-11T14:35:00Z",
+    "baseFare":400,
+    "totalSeats":375,
+    "seatsBooked":25,
+    "dynamicFare":200
+}
+```
+
+### Explanation
+
+In the JSON response data, the properties `id`, `departure`, `arrival`, `flightNumber`, `aircraft`, `departureDateTime`, `arrivalDateTime`, `baseFare`, `totalSeats` and `seatsBooked` must exactly match the values provided in `data.json` for flight schedule id 522.
+
+From the explanation in **Example 1**, we know that `3rd Jun 2024` is the date when booking starts.
+
+If the booking date falls in the first 10 day period, then the dynamic fare must be half of the base fare.
+
+For this flight, the base fare is $400, half of this is $200, so the dynamic fare is $200, so in the response it is expected that the `dynamicFare` value must be `200`.
+
+## Example 3
+
+### Input
+
+```
+GET
+http://localhost:60000/api/v1/flight-schedules/524/2024-08-16
+```
+
+### Output
+
+For the above request, it must return the below status code and JSON response.
+
+```
+{
+    "id":524,
+    "departure":"LAX",
+    "arrival":"JFK",
+    "flightNumber":"DL 934",
+    "aircraft":"Boeing 767",
+    "departureDateTime":"2024-09-13T06:00:00Z",
+    "arrivalDateTime":"2024-09-13T14:35:00Z",
+    "baseFare":400,
+    "totalSeats":375,
+    "seatsBooked":230,
+    "dynamicFare":490
+}
+```
+### Explanation
+
+Refer table below, which shows the dynamic fare calculation for each 10 day period, considering `13th Sep` as the departure date.
+
+| 5 Jun | 15 Jun | 25 Jun | 5 Jul | 15 Jul | 25 Jul | 4 Aug | 14 Aug | 24 Aug | 3 Sep |
+|-------|--------|--------|-------|--------|--------|-------|--------|--------|-------|
+|200|240|280|320|360|400|440|480|520|560|600|
+
+The date displayed, is the starting date of the respective 10 day period. The first 10 day period starts on 5th Jun and ends on 14th Jun. The second 10 day period starts on 15 Jun and ends on 14th Jun.
+
+The above calculation only considers the 10% addition on each 10 day period and does not consider the seat occupancy logic.
+
+The booking date is `2024-08-16`, which falls under the period starting `14 Aug`, so the dynamic fare without seat occupancy consideration is $480.
+
+It is obvious that the booking date is within 2nd half 50 days period, so seat occupancy as well needs to be considered.
+
+`Seat Occupancy % = 230 / 375 * 100 = 61.333%`
+
+The seat occupancy falls under 50% to 75% range, hence $10 needs to be added to the dynamic fare calculated so far.
+
+`Dynamic Fare = $480 + $10 = $490`
+
+
+## Validation and Submission Guidelines ##
+
+1. Click on the 'Validate' option available in the status bar to initiate validation, which will display the test results in a new window.
+
+2. When clicking 'Validate' option ensure that your services is running in port 60000 and the endpoints are configured exactly similar to the examples provided above.
+
+3. There will be a notification every 20 minutes to denote the timeleft to complete the assessment.
+
+4. The test results of the last Validation is what will be considered as the final result. So ensure that 'Validation' is done frequently which saves your recent changes.
+
+5. If you have completed the test, use "Finish Assessment" option in BanyanPro window to submit your assessment.
+
+6. Once the time duration ends, your assessment is automatically submitted in the BanyanPro window.
+
+7. A random name is assigned to each codespace whenever launched.
+
+8. Incase of eventuality that the codespace window is closed due to unforeseen circumstances follow the below instructions:
+
+   a. Open the assessment repository window, if that window is also closed use the repository link sent in the mail.
+
+   b. Click the green "Code" button.
+
+   c. In the drop down, ensure that "Codespaces" tab is selected.
+
+   d. The "Codespace" tab must list the previously created codespace.
+
+   e. Right click on the respective codespace and select "Open in new tab", which will open the codespace with all the files available when the tab got closed.
+
+9. You can also consider periodically committing and push the code to the repository.
